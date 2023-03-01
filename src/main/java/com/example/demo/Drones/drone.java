@@ -19,6 +19,7 @@ public class drone {
     public Double BateryCapacity;
     public String State;
     public List<Medication> Med;
+    public String bateryState;
 
     public drone(int serialnumber, String Model, Double Weightlimit, Double BateryCapacity, String State) {
         this.serialnumber = serialnumber;
@@ -27,6 +28,12 @@ public class drone {
         this.BateryCapacity = BateryCapacity;
         this.State = State;
     }
+
+    public String getBateryState() {
+        return bateryState;
+    }
+    
+    
 
     public Double getBateryCapacity() {
         return BateryCapacity;
@@ -71,9 +78,13 @@ public class drone {
     public void setMed(List<Medication> Med) {
         this.Med = Med;
     }
-    
-    
 
+    public void setBateryState(String bateryState) {
+        this.bateryState = bateryState;
+    }
+    
+    
+    
     
     
     

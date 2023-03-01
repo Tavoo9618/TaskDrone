@@ -22,21 +22,26 @@ public class demoController {
     
  @RequestMapping("/")
     public String index() {
-        return "Greetings from Spring Boot!";
+        return "Greetings from Spring Boot2!";
     }
     
     
+    /* registering drone*/
+    @RequestMapping("/")
      public void RegisteringaDrone ( drone d){
     
     }
     
-    
+    /* loading drone with medication items*/
+    @RequestMapping("/")
     public void loadDoWMedItem(){
         double weightlimit = 500;
         
     
     }
     
+    /* cheking loaaded medication items for a given drone*/
+    @RequestMapping("/")
     public List<Medication> chekingLoadMed(drone d){
     
         List<Medication> M = new ArrayList<>();
@@ -44,17 +49,23 @@ public class demoController {
         
     }
     
-    
+    /*cheking availables drones for loading*/
+    @RequestMapping("/")
     public List<drone> chekavaliDronForLoad( List<drone> dro){
+        
     
         List<drone> d= new ArrayList<>();
         return d;
         
     }
+    /*cheking availables drones for loading*/
+    @RequestMapping("/batery")
+    public String  chekDroneBatery(){
+        String B;
     
-    public String  shekDroneBatery(drone d ){
-        String B="";
-        return B;
+        int per=(int) (Math.floor(Math.random()*(100-0+1)+0));
+        
+        return B=String.valueOf(per)+"%";
         }
     
 }
