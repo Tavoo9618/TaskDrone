@@ -9,6 +9,8 @@ import com.example.demo.Drones.Medication;
 import com.example.demo.Drones.drone;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,21 +21,23 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class demoController {
+ 
+   
     
  @RequestMapping("/")
     public String index() {
-        return "Greetings from Spring Boot2!";
+        return "Greetings from Spring Boot!";
     }
     
     
     /* registering drone*/
-    @RequestMapping("/")
+    @RequestMapping("/a")
      public void RegisteringaDrone ( drone d){
-    
+     
     }
     
     /* loading drone with medication items*/
-    @RequestMapping("/")
+    @RequestMapping("/b")
     public void loadDoWMedItem(){
         double weightlimit = 500;
         
@@ -41,7 +45,7 @@ public class demoController {
     }
     
     /* cheking loaaded medication items for a given drone*/
-    @RequestMapping("/")
+    @RequestMapping("/c")
     public List<Medication> chekingLoadMed(drone d){
     
         List<Medication> M = new ArrayList<>();
@@ -50,7 +54,7 @@ public class demoController {
     }
     
     /*cheking availables drones for loading*/
-    @RequestMapping("/")
+    @RequestMapping("/d")
     public List<drone> chekavaliDronForLoad( List<drone> dro){
         
     
@@ -65,7 +69,20 @@ public class demoController {
     
         int per=(int) (Math.floor(Math.random()*(100-0+1)+0));
         
-        return B=String.valueOf(per)+"%";
+        return B="batery state:"+String.valueOf(per)+"%";
         }
+    
+    
+    public String paternvalid(String patern,String phrase){
+        
+     Pattern pat = Pattern.compile(patern);
+     Matcher mat = pat.matcher(phrase);
+      if (mat.matches()) {
+         System.out.println("yes");
+     } else {
+         System.out.println("NO");                                                                                
+     }
+        return patern;
+    }
     
 }
