@@ -6,6 +6,8 @@
 package com.example.demo.Drones;
 
 import java.util.List;
+import java.util.regex.*;
+
 
 /**
  *
@@ -14,24 +16,31 @@ import java.util.List;
 public class drone {
 
     public int serialnumber;
-    public String Model;
+    public List<Medication> lismedication;
+
+    /**
+     *
+     */
+    public enum Model { Lightweiht, Middleweight,Cruiserwight,Heavyweight} 
     public Double Weightlimit;
     public Double BateryCapacity;
-    public String State;
+    public enum State { Lightweiht, Middleweight,Cruiserwight,Heavyweight}
     public List<Medication> Med;
     public String bateryState;
 
     public drone(int serialnumber, String Model, Double Weightlimit, Double BateryCapacity, String State) {
         this.serialnumber = serialnumber;
-        this.Model = Model;
         this.Weightlimit = Weightlimit;
         this.BateryCapacity = BateryCapacity;
-        this.State = State;
+        
+    
     }
 
     public String getBateryState() {
         return bateryState;
     }
+
+    
     
     
 
@@ -39,9 +48,7 @@ public class drone {
         return BateryCapacity;
     }
 
-    public String getModel() {
-        return Model;
-    }
+   
 
     public int getSerialnumber() {
         return serialnumber;
@@ -59,17 +66,13 @@ public class drone {
         this.BateryCapacity = BateryCapacity;
     }
 
-    public void setModel(String Model) {
-        this.Model = Model;
-    }
+    
 
     public void setSerialnumber(int serialnumber) {
         this.serialnumber = serialnumber;
     }
 
-    public void setState(String State) {
-        this.State = State;
-    }
+   
 
     public void setWeightlimit(Double Weightlimit) {
         this.Weightlimit = Weightlimit;
@@ -83,7 +86,9 @@ public class drone {
         this.bateryState = bateryState;
     }
     
-    
+    public void setLismedication(List<Medication> lismedication) {
+        this.lismedication = lismedication;
+    }
     
     
     

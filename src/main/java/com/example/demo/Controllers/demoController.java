@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class demoController {
  
-   
+ public List<drone> listdrone =new ArrayList<>();
+ public List<Medication> listmed =new ArrayList<>();
     
  @RequestMapping("/")
     public String index() {
@@ -32,13 +33,16 @@ public class demoController {
     
     /* registering drone*/
     @RequestMapping("/a")
-     public void RegisteringaDrone ( drone d){
+     public void RegisteringaDrone (String Serialnumber){
+      String validation = paternvalid("[\\w]{1,100}", Serialnumber);
      
     }
     
     /* loading drone with medication items*/
     @RequestMapping("/b")
-    public void loadDoWMedItem(){
+    public void loadDoWMedItem(String name, String code){
+        String validname=paternvalid("[\\w]{1,100}", name);
+        String validcode=paternvalid("[\\w]{1,100}", code);
         double weightlimit = 500;
         
     
