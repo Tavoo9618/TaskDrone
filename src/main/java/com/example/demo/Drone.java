@@ -21,7 +21,7 @@ public class Drone {
     private @Id @GeneratedValue int Droneid;
     private int serialnumber;
     private Models model;
-    private Double Weightlimit;
+    private final Double Weightlimit = 500.00;
     private Double BateryCapacity;
     private States states ;
     
@@ -29,10 +29,9 @@ public class Drone {
     
     Drone() {}
 
-    public Drone(int serialnumber, Double Weightlimit, Double BateryCapacity ,Models model ) {
+    public Drone(int serialnumber , Double BateryCapacity ,Models model ) {
         this.model=model;
         this.serialnumber = serialnumber;
-        this.Weightlimit = Weightlimit;
         this.BateryCapacity = BateryCapacity;
         this.states = States.IDLE;
         
@@ -67,9 +66,7 @@ public class Drone {
         this.serialnumber = serialnumber;
     }
 
-    public void setWeightlimit(Double Weightlimit) {
-        this.Weightlimit = Weightlimit;
-    }
+   
 
     public int getDroneid() {
         return Droneid;

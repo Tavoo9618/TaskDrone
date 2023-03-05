@@ -1,3 +1,8 @@
+build and run instruction 
+java -jar demo-0.0.1-SNAPSHOT.jar
+
+
+
 use instruction 
 
  /* registering drone*/
@@ -18,5 +23,3 @@ use instruction
     @GetMapping("/drone/forload")
 
 
-build and run instruction 
-java -jar
