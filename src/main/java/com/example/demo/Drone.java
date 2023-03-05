@@ -34,6 +34,7 @@ public class Drone {
         this.serialnumber = serialnumber;
         this.BateryCapacity = BateryCapacity;
         this.states = States.IDLE;
+        this.bateryState="100%";
         
     
     }
@@ -115,12 +116,12 @@ public class Drone {
 
     @Override
     public int hashCode() {
-       return Objects.hash(this.Droneid,this.serialnumber,this.model,this.Weightlimit,this.states,this.BateryCapacity);
+       return Objects.hash(this.Droneid,this.serialnumber,this.model,this.Weightlimit,this.states,this.BateryCapacity,this.bateryState);
     }
 
     @Override
     public String toString() {
-         return "Drone{" + "id=" + this.Droneid + ", serialnumber='" + this.serialnumber + '\'' + ",WeightLimit='" + this.Weightlimit + '\'' + '}'; 
+         return "Drone{"+ ", serialnumber :'" + this.serialnumber + '\'' + ",BateryLevel='" +this.bateryState + '\'' + '}'; 
     }
     
     

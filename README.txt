@@ -1,7 +1,7 @@
 build and run instruction 
 java -jar demo-0.0.1-SNAPSHOT.jar
 
-
+to use postman json request 
 
 use instruction 
 
