@@ -5,8 +5,10 @@
  */
 package com.example.demo.Controllers;
 
-import com.example.demo.Drones.Medication;
-import com.example.demo.Drones.drone;
+
+import com.example.demo.Drone;
+import com.example.demo.medication;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,15 +17,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 /**
  *
  * @author JANIER
  */
-@RestController
+//@RestController
 public class demoController {
  
- public List<drone> listdrone =new ArrayList<>();
- public List<Medication> listmed =new ArrayList<>();
+    
+ 
+ 
     
  @RequestMapping("/")
     public String index() {
@@ -50,19 +54,19 @@ public class demoController {
     
     /* cheking loaaded medication items for a given drone*/
     @RequestMapping("/c")
-    public List<Medication> chekingLoadMed(drone d){
+    public List<medication> chekingLoadMed(Drone d){
     
-        List<Medication> M = new ArrayList<>();
+        List<medication> M = new ArrayList<>();
         return M;
         
     }
     
     /*cheking availables drones for loading*/
     @RequestMapping("/d")
-    public List<drone> chekavaliDronForLoad( List<drone> dro){
+    public List<Drone> chekavaliDronForLoad( List<Drone> dro){
         
     
-        List<drone> d= new ArrayList<>();
+        List<Drone> d= new ArrayList<>();
         return d;
         
     }
