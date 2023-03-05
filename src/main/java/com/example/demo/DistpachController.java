@@ -11,7 +11,14 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.media.Media;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.mediatype.problem.Problem;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +38,14 @@ public class DistpachController {
     
      private final medicationRepository medicatiorepos;
      private final DroneRepository dronerepos;
+     private final DroneModelAssembler assembler;
+     private final MedicationModelAssembler assemblerm;
 
-    public DistpachController(medicationRepository medicatiorepos, DroneRepository dronerepos) {
+    public DistpachController(medicationRepository medicatiorepos, DroneRepository dronerepos,DroneModelAssembler assembler,MedicationModelAssembler assemblerm) {
         this.medicatiorepos = medicatiorepos;
         this.dronerepos = dronerepos;
+        this.assembler = assembler;
+        this.assemblerm = assemblerm;
     }
       @GetMapping("/medication")
   List<medication> alla() {
@@ -42,37 +53,74 @@ public class DistpachController {
   }
   
   @GetMapping("/drone")
-  List<Drone> allo() {
+  List<Drone> alldrones() {
     return dronerepos.findAll();
   }
     
-    
+  @GetMapping("/drone/{id}")
+    EntityModel<Drone> onedron(@PathVariable long id) {
+    Drone drone  =  dronerepos.findById(id).orElseThrow(()-> new DroneNotFoundException(id));
+    return assembler.toModel(drone);
+  } 
     
      /* registering drone*/
     @PostMapping("/drone/add")
-     Drone RegisteringaDrone (@RequestBody Drone newDrone){
-      String validation = paternvalid("[\\w]{1,100}",String.valueOf(newDrone.getSerialnumber()));
-      return dronerepos.save(newDrone);
-     
+     ResponseEntity<?> RegisteringaDrone (@RequestBody Drone newDrone){
+      boolean validation = paternvalid("[\\w]{1,100}",String.valueOf(newDrone.getSerialnumber()));
+      if(validation){
+       EntityModel<Drone> entitymodel = assembler.toModel( dronerepos.save(newDrone));
+       
+      return ResponseEntity //
+      .created(entitymodel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+      .body(entitymodel);
+      }else{
+      return
+              ResponseEntity //
+      .status(HttpStatus.METHOD_NOT_ALLOWED) //
+      .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
+      .body(Problem.create() //
+          .withTitle("Method not allowed") //
+          .withDetail("serial number 100 charateres max"));
+}
+      
     }
     
     /* loading drone with medication items*/
     @PostMapping("/drone/medication/add/{id}")
-    public void loadDoWMedItem(@RequestBody medication newmedication ,@PathVariable int id){
-        double weightlimit = 500;
+    ResponseEntity<?> loadDoWMedItem(@RequestBody medication newmedication ,@PathVariable long id){
+        Drone drone= dronerepos.findById(id).orElseThrow(()-> new DroneNotFoundException(id));
         Double totalweight=0.00;
-        String validname=paternvalid("[a-zA-Z0-9_-]", newmedication.getName());
-        String validcode=paternvalid("[A-Z0-9_]", newmedication.getCode());
+        Boolean validname=paternvalid("[a-zA-Z0-9_-]", newmedication.getName());
+        Boolean validcode=paternvalid("[A-Z0-9_]", newmedication.getCode());
+        if((validname && validcode)&&(drone.getStates()==States.IDLE || drone.getStates()==States.LOADING)){
         for(medication m: medicatiorepos.findAll() ){
         if(m.getDroneid()==id){
         totalweight+=m.getWeight();
         }
         }
-         
-                
-        
-        
-        
+        if(totalweight-drone.getWeightlimit()<=0){
+         return
+       ResponseEntity //
+      .status(HttpStatus.METHOD_NOT_ALLOWED) //
+      .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
+      .body(Problem.create().withTitle("Method not allowed").withDetail("enter one item of lesser weight"));
+        }else{
+            EntityModel<medication> entitymodel = assemblerm.toModel(medicatiorepos.save(newmedication));
+            
+        return 
+         ResponseEntity //
+      .created(entitymodel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+      .body(entitymodel);       
+        }
+        }
+        else{
+     return   ResponseEntity //
+      .status(HttpStatus.METHOD_NOT_ALLOWED) //
+      .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
+      .body(Problem.create().withTitle("Method not allowed").withDetail("name or code invalid"));
+        } 
+          
+           
     
     }
     
@@ -86,7 +134,6 @@ public class DistpachController {
          M.add(m);
         }
         return M;
-        
     }
     
     
@@ -124,16 +171,12 @@ public class DistpachController {
     
     
     
-    public String paternvalid(String patern,String phrase){
+    public Boolean paternvalid(String patern,String phrase){
         
      Pattern pat = Pattern.compile(patern);
      Matcher mat = pat.matcher(phrase);
-      if (mat.matches()) {
-         System.out.println("yes");
-     } else {
-         System.out.println("NO");                                                                                
-     }
-        return patern;
+     return mat.matches();
+        
     }
     
 }

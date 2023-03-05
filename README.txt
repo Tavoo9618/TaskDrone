@@ -23,3 +23,4 @@ use instruction
     @GetMapping("/drone/forload")
 
 
+the battery  log into  console
