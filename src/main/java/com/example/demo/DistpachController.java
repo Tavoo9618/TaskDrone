@@ -47,9 +47,15 @@ public class DistpachController {
         this.assembler = assembler;
         this.assemblerm = assemblerm;
     }
-      @GetMapping("/medication")
-  List<medication> alla() {
+   @GetMapping("/medication")
+  List<medication> allmedications() {
     return medicatiorepos.findAll();
+  }
+  
+  @GetMapping("/medication/{id}")
+  EntityModel<medication> onemedication(@PathVariable long id) {
+  medication medic = medicatiorepos.findById(id).orElseThrow(()-> new MedicNotFoundException(id));
+  return assemblerm.toModel(medic);
   }
   
   @GetMapping("/drone")
@@ -68,7 +74,7 @@ public class DistpachController {
      ResponseEntity<?> RegisteringaDrone (@RequestBody Drone newDrone){
       boolean validation = paternvalid("[\\w]{1,100}",String.valueOf(newDrone.getSerialnumber()));
       if(validation){
-       EntityModel<Drone> entitymodel = assembler.toModel( dronerepos.save(newDrone));
+      EntityModel<Drone> entitymodel = assembler.toModel( dronerepos.save(newDrone));
        
       return ResponseEntity //
       .created(entitymodel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
@@ -92,7 +98,7 @@ public class DistpachController {
         Double totalweight=0.00;
         Boolean validname=paternvalid("[a-zA-Z0-9_-]", newmedication.getName());
         Boolean validcode=paternvalid("[A-Z0-9_]", newmedication.getCode());
-        if((validname && validcode)&&(drone.getStates()==States.IDLE || drone.getStates()==States.LOADING)){
+        if((validname && validcode)&&(drone.getStates()==States.IDLE || drone.getStates()==States.LOADING)&& drone.getBateryState()>25){
         for(medication m: medicatiorepos.findAll() ){
         if(m.getDroneid()==id){
         totalweight+=m.getWeight();
@@ -106,7 +112,8 @@ public class DistpachController {
       .body(Problem.create().withTitle("Method not allowed").withDetail("enter one item of lesser weight"));
         }else{
             EntityModel<medication> entitymodel = assemblerm.toModel(medicatiorepos.save(newmedication));
-            
+            drone.setStates(States.LOADING);
+            dronerepos.save(drone);
         return 
          ResponseEntity //
       .created(entitymodel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
@@ -126,8 +133,8 @@ public class DistpachController {
     
     /* cheking loaaded medication items for a given drone*/
     @GetMapping("/drone/medication/check/{id}")
-    public List<medication> chekingLoadMed(@PathVariable int id){
-        //validar id
+    public List<medication> chekingLoadMed(@PathVariable long id){
+        Drone drone= dronerepos.findById(id).orElseThrow(()-> new DroneNotFoundException(id));
         List<medication> M = new ArrayList<>();
         for(medication m: medicatiorepos.findAll()){
         if(m.getDroneid()==id) 
@@ -142,7 +149,7 @@ public class DistpachController {
     public List<Drone> chekavaliDronForLoad(){
       List<Drone> D= new ArrayList<>();   
       for(Drone d:dronerepos.findAll()){
-        if(d.getStates()==States.IDLE ||d.getStates()==States.LOADING ){
+        if((d.getStates()==States.IDLE && d.getBateryState()>25) || (d.getStates()==States.LOADING && d.getBateryState()>25 )){
         D.add(d);
         }
       }
@@ -157,14 +164,11 @@ public class DistpachController {
     
     
     
-    
+     /*check  drone battery level for a given drone*/
     @GetMapping("/drone/batterystatus/{id}")
-    public String  chekDroneBatery(){
-        String B;
-    
-        int per=(int) (Math.floor(Math.random()*(100-0+1)+0));
-        
-        return B="batery state:"+String.valueOf(per)+"%";
+    public String  chekDroneBatery(@PathVariable long id){
+       Drone drone= dronerepos.findById(id).orElseThrow(()-> new DroneNotFoundException(id));
+       return String.valueOf(drone.getBateryState()+"%");
         }
     
     

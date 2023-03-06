@@ -18,23 +18,23 @@ import javax.persistence.Id;
 @Entity
 public class Drone {
     
-    private @Id @GeneratedValue int Droneid;
-    private int serialnumber;
+    private @Id @GeneratedValue Long Droneid;
+    private String serialnumber;
     private Models model;
     private final Double Weightlimit = 500.00;
     private Double BateryCapacity;
     private States states ;
     
-    private String bateryState;
+    private int bateryState;
     
     Drone() {}
 
-    public Drone(int serialnumber , Double BateryCapacity ,Models model ) {
+    public Drone(String serialnumber , Double BateryCapacity ,Models model ) {
         this.model=model;
         this.serialnumber = serialnumber;
         this.BateryCapacity = BateryCapacity;
         this.states = States.IDLE;
-        this.bateryState="100%";
+        this.bateryState=100;
         
     
     }
@@ -49,11 +49,11 @@ public class Drone {
     
     
 
-    public void setDroneid(int Droneid) {
+    public void setDroneid(long Droneid) {
         this.Droneid = Droneid;
     }
 
-    public void setBateryState(String bateryState) {
+    public void setBateryState(int bateryState) {
         this.bateryState = bateryState;
     }
     
@@ -63,13 +63,13 @@ public class Drone {
         this.BateryCapacity = BateryCapacity;
     }
 
-    public void setSerialnumber(int serialnumber) {
+    public void setSerialnumber(String serialnumber) {
         this.serialnumber = serialnumber;
     }
 
    
 
-    public int getDroneid() {
+    public Long getDroneid() {
         return Droneid;
     }
 
@@ -77,11 +77,11 @@ public class Drone {
         return BateryCapacity;
     }
 
-    public String getBateryState() {
+    public int getBateryState() {
         return bateryState;
     }
 
-    public int getSerialnumber() {
+    public String getSerialnumber() {
         return serialnumber;
     }
 
@@ -121,7 +121,7 @@ public class Drone {
 
     @Override
     public String toString() {
-         return "Drone{"+ ", serialnumber :'" + this.serialnumber + '\'' + ",BateryLevel='" +this.bateryState + '\'' + '}'; 
+         return "Drone{"+" id:'" + this.Droneid+ '\'' + ", serialnumber :'" + this.serialnumber + '\'' + ",BateryLevel='" +this.bateryState+"%" + '\'' + '}'; 
     }
     
     

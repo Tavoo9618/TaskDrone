@@ -9,6 +9,9 @@ package com.example.demo;
  *
  * @author JANIER
  */
-public class MedicNotFoundException {
-    
+public class MedicNotFoundException extends RuntimeException{
+   
+     MedicNotFoundException(Long id) {
+    super("Could not find medication" + id);
+  }
 }

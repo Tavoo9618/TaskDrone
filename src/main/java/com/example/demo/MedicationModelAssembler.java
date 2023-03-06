@@ -23,7 +23,7 @@ public class MedicationModelAssembler implements RepresentationModelAssembler<me
   public EntityModel<medication> toModel(medication medic) {
 
     return EntityModel.of(medic, //
-        linkTo(methodOn(DistpachController.class).onedron(medic.getDroneid())).withSelfRel(),
-        linkTo(methodOn(DistpachController.class).alldrones()).withRel("medication"));
+        linkTo(methodOn(DistpachController.class).onemedication(medic.getDroneid())).withSelfRel(),
+        linkTo(methodOn(DistpachController.class).allmedications()).withRel("medication"));
   }
 }

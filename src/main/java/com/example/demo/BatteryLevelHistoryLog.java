@@ -32,8 +32,13 @@ private static final Logger loge = LoggerFactory.getLogger(BatteryLevelHistoryLo
     @Scheduled(fixedRate = 3000, initialDelay = 10000)   
     public void tarea2() {
         for(Drone d: dro.findAll()){
-      loge.info("mis logs tes "+d.toString()); 
+      d.setBateryState((int) (Math.floor(Math.random()*(100-0+1)+0)));
+      dro.save(d);
+      loge.info(d.toString()); 
         }
+        
+        
+     
     }
    
      

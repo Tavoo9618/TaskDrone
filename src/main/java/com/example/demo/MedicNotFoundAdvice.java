@@ -9,6 +9,21 @@ package com.example.demo;
  *
  * @author JANIER
  */
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ControllerAdvice
 public class MedicNotFoundAdvice {
+   
+@ResponseBody
+  @ExceptionHandler(DroneNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  String medicationNotFoundHandler(MedicNotFoundException ex) {
+    return ex.getMessage();
+  }        
+    
     
 }

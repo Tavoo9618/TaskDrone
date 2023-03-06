@@ -1,14 +1,19 @@
 build and run instruction 
 java -jar demo-0.0.1-SNAPSHOT.jar
 
-to use postman json request 
+use postman only json request 
 
 use instruction 
 
  /* registering drone*/
-    @PostMapping("/drone/add")
+ Post  ("127.0.0.1:8080/drone/add")
 
-
+{
+    "serialnumber": 1019,
+    "model": "Middleweight",
+    "states": "IDLE",
+  "bateryCapacity": 100.00
+}
 
 
  /* loading drone with medication items*/
@@ -22,5 +27,9 @@ use instruction
  /*cheking availables drones for loading*/
     @GetMapping("/drone/forload")
 
+/*check  drone battery level for a given drone*/
+/drone/batterystatus/{id}
 
-the battery  log into  console
+
+the battery leveñ  log  into  console
+please hold on 
