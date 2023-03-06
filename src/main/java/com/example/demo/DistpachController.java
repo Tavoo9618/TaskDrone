@@ -98,19 +98,20 @@ public class DistpachController {
         Double totalweight=0.00;
         Boolean validname=paternvalid("[a-zA-Z0-9_-]", newmedication.getName());
         Boolean validcode=paternvalid("[A-Z0-9_]", newmedication.getCode());
-        if((validname && validcode)&&(drone.getStates()==States.IDLE || drone.getStates()==States.LOADING)&& drone.getBateryState()>25){
+        if(true){
         for(medication m: medicatiorepos.findAll() ){
         if(m.getDroneid()==id){
         totalweight+=m.getWeight();
         }
         }
-        if(totalweight-drone.getWeightlimit()<=0){
+        if(drone.getWeightlimit()-totalweight<=0){
          return
        ResponseEntity //
       .status(HttpStatus.METHOD_NOT_ALLOWED) //
       .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
       .body(Problem.create().withTitle("Method not allowed").withDetail("enter one item of lesser weight"));
         }else{
+            newmedication.setDroneid((int)id);
             EntityModel<medication> entitymodel = assemblerm.toModel(medicatiorepos.save(newmedication));
             drone.setStates(States.LOADING);
             dronerepos.save(drone);

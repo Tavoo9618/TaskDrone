@@ -29,7 +29,7 @@ private static final Logger loge = LoggerFactory.getLogger(BatteryLevelHistoryLo
  
 
     
-    @Scheduled(fixedRate = 3000, initialDelay = 10000)   
+    @Scheduled(fixedRate = 6000, initialDelay = 10000)   
     public void tarea2() {
         for(Drone d: dro.findAll()){
       d.setBateryState((int) (Math.floor(Math.random()*(100-0+1)+0)));
