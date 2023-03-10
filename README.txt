@@ -4,6 +4,14 @@ java -jar demo-0.0.1-SNAPSHOT.jar
 use postman only json request 
 
 use instruction 
+  /*all drone*/
+ get 127.0.0.1:8080/drone
+ 
+/*one drone*/
+get 127.0.0.1:8080/drone/id
+
+
+
 
  /* registering drone*/
  Post  ("127.0.0.1:8080/drone/add")
@@ -26,7 +34,7 @@ use instruction
 }
 
 
- /* cheking loaaded medication items for a given drone*/
+ /* cheking loaded medication items for a given drone*/
  GET ("/drone/medication/check/{drone id}")
 
 

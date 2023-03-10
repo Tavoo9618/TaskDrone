@@ -96,8 +96,8 @@ public class DistpachController {
     ResponseEntity<?> loadDoWMedItem(@RequestBody medication newmedication ,@PathVariable long id){
         Drone drone= dronerepos.findById(id).orElseThrow(()-> new DroneNotFoundException(id));
         Double totalweight=0.00;
-        Boolean validname=paternvalid("[a-zA-Z0-9_-]", newmedication.getName());
-        Boolean validcode=paternvalid("[A-Z0-9_]", newmedication.getCode());
+        Boolean validname=paternvalid(".*[a-zA-Z0-9-_]", newmedication.getName());
+        Boolean validcode=paternvalid(".*[A-Z0-9_]", newmedication.getCode());
         if(true){
         for(medication m: medicatiorepos.findAll() ){
         if(m.getDroneid()==id){
